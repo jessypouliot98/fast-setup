@@ -1,14 +1,18 @@
+import os
 import subprocess
 from pathlib import Path
 import webbrowser
 
-# Utils
-
 downloads_path = str(Path.home() / "Downloads")
 
+# Utils
+
+def ask(question):
+  answer = input(question +  ' [y/n] (y): ')
+  return answer.lower() != 'n'
+
 def askToInstall(category):
-  answer = input('Do you want to install ' + category + ' ? [y/n] (y): ')
-  shouldInstall = answer.lower() != 'n'
+  shouldInstall = ask('Do you want to install ' + category + ' ?')
   if shouldInstall:
     print('Installing ' + category + '...')
   else:
@@ -21,83 +25,37 @@ def getDownloadDest(fileName):
 def downloadAndRun(url, fileName):
   try:
     subprocess.call(['powershell', 'Invoke-WebRequest', '-Uri', url, '-OutFile', getDownloadDest(fileName)])
-    return 1
+    return True
   except:
-    return 0
+    return False
 
 def openInBrowser(url):
   try:
     webbrowser.open(url, new=2)
-    return 1
+    return True
   except:
-    return 0
+    return False
 
-def wingetInstall(appId):
+def wingetInstall(appId, force = False):
+  print('Installing ' + appId);
   try:
-    subprocess.call(['powershell', 'winget', 'install', appId])
-    return 1
+    forceFlag = '--force' if force else ''
+    code = subprocess.call(['powershell', 'winget', 'install', appId, forceFlag])
+    if (code > 0):
+      raise Exception('winget error')
+    return True
   except:
-    return 0
+    shouldRetry = ask('Retry with force ?')
+    if (shouldRetry):
+      return wingetInstall(appId, True)
+    return False
 
+def appxUninstall(packageName):
+  print('Uninstalling ' + packageName)
+  command = ', '.join(['DISM', '/Online', '/Remove-ProvisionedAppxPackage', '/PackageName:' + packageName])
+  os.system('powershell start-process PowerShell -verb runas -Wait -ArgumentList "' + command + '"')
 
 # Installers
-
-def installChrome():
-  return wingetInstall('Google.Chrome')
-
-def installSteam():
-  return wingetInstall('Valve.Steam')
-  
-def installDiscord():
-  return wingetInstall('Discord.Discord')
-
-def installEpicGames():
-  return wingetInstall('EpicGames.EpicGamesLauncher')
-
-def installUbisoftConnect():
-  return wingetInstall('Ubisoft.Connect')
-
-def installFork():
-  return wingetInstall('Fork.Fork')
-
-def installVSCode():
-  return wingetInstall('Microsoft.VisualStudioCode')
-
-def installLeagueOfLegends():
-  return wingetInstall('RiotGames.LeagueOfLegends.NA')
-
-def installIriunWebcam():
-  return wingetInstall('Iriun.IriunWebcam')
-
-def installPlaystationRemotePlay():
-  return wingetInstall('PlayStation.PSRemotePlay')
-
-def installSpotify():
-  return wingetInstall('Spotify.Spotify')
-
-def installTerminal():
-  return wingetInstall('Microsoft.WindowsTerminal')
-
-def installGit():
-  return wingetInstall('Git.Git')
-
-def installNvidiaGeForceExperience():
-  return wingetInstall('Nvidia.GeForceExperience')
-
-def installNvidiaBroadcast():
-  return wingetInstall('Nvidia.Broadcast')
-
-def downloadAMDRadeonSoftware():
-  return openInBrowser('https://www.amd.com/en/support')
-
-def downloadAMDRyzenSoftware():
-  return openInBrowser('https://www.amd.com/en/support')
-
-def downloadIntelDrivers():
-  return openInBrowser('https://www.intel.com/content/www/us/en/search.html?ws=text#sort=relevancy&layout=table&f:@tabfilter=[Downloads]')
-
-def install7Zip():
-  return wingetInstall('7zip.7zip')
 
 def installWSL():
   try:
@@ -109,19 +67,19 @@ def installWSL():
 def installGPUApps():
   gpuType = input('Enter your GPU type [nvidia|amd]: ')
   if (gpuType == 'nvidia'):
-    installNvidiaGeForceExperience()
-    installNvidiaBroadcast()
+    wingetInstall('Nvidia.GeForceExperience')
+    wingetInstall('Nvidia.Broadcast')
   elif (gpuType == 'amd'):
-    downloadAMDRadeonSoftware()
+    openInBrowser('https://www.amd.com/en/support')
   else:
     print('No GPU selected')
 
 def installCPUApps():
   cpuType = input('Enter your CPU type [intel|amd]: ')
   if (cpuType == 'intel'):
-    downloadIntelDrivers()
+    openInBrowser('https://www.intel.com/content/www/us/en/search.html?ws=text#sort=relevancy&layout=table&f:@tabfilter=[Downloads]')
   elif (cpuType == 'amd'):
-    downloadAMDRyzenSoftware()
+    openInBrowser('https://www.amd.com/en/support')
   else:
     print('No CPU selected')
 
@@ -131,8 +89,8 @@ def installCPUApps():
 def main():
   # Base
   if askToInstall('Required apps'):
-    install7Zip()
-    installChrome()
+    wingetInstall('7zip.7zip')
+    wingetInstall('Google.Chrome')
 
   # Drivers
   if askToInstall('Drivers'):
@@ -141,24 +99,24 @@ def main():
 
   # Misc
   if askToInstall('Common apps'):
-    installDiscord()
-    installSpotify()
-    installIriunWebcam()
+    wingetInstall('Discord.Discord')
+    wingetInstall('Spotify.Spotify')
+    wingetInstall('Iriun.IriunWebcam')
 
   # Games
   if askToInstall('Game apps & games'):
-    installSteam()
-    installEpicGames()
-    installUbisoftConnect()
-    installPlaystationRemotePlay()
-    installLeagueOfLegends()
+    wingetInstall('Valve.Steam')
+    wingetInstall('EpicGames.EpicGamesLauncher')
+    wingetInstall('Ubisoft.Connect')
+    wingetInstall('PlayStation.PSRemotePlay')
+    wingetInstall('RiotGames.LeagueOfLegends.NA')
 
   # Code
   if askToInstall('Code tools'):
-    installGit()
-    installFork()
-    installVSCode()
-    installTerminal()
+    wingetInstall('Git.Git')
+    wingetInstall('Fork.Fork')
+    wingetInstall('Microsoft.VisualStudioCode')
+    wingetInstall('Microsoft.WindowsTerminal')
 
   # Dev
   if askToInstall('Dev dependencies'):
