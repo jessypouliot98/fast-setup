@@ -120,6 +120,7 @@ def main():
 
   # Dev
   if askToInstall('Dev dependencies'):
+    wingetInstall('OpenJS.NodeJS')
     installWSL()
 
 
