@@ -110,6 +110,7 @@ def main():
     wingetInstall('Ubisoft.Connect')
     wingetInstall('PlayStation.PSRemotePlay')
     wingetInstall('RiotGames.LeagueOfLegends.NA')
+    wingetInstall('Parsec.Parsec')
 
   # Code
   if askToInstall('Code tools'):
@@ -117,6 +118,7 @@ def main():
     wingetInstall('Fork.Fork')
     wingetInstall('Microsoft.VisualStudioCode')
     wingetInstall('Microsoft.WindowsTerminal')
+    wingetInstall('Docker.DockerDesktop')
 
   # Dev
   if askToInstall('Dev dependencies'):
