@@ -118,6 +118,8 @@ def main():
     wingetInstall('Fork.Fork')
     wingetInstall('Microsoft.VisualStudioCode')
     wingetInstall('Microsoft.WindowsTerminal')
+    wingetInstall('TablePlus.TablePlus')
+    wingetInstall('Postman.Postman')
     wingetInstall('Docker.DockerDesktop')
 
   # Dev
