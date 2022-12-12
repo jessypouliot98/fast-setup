@@ -43,6 +43,12 @@ installChromeApp () {
   rm $SOURCE_FILE
 }
 
+postSetup() {
+  echo ""
+  echo "Resource terminal and then"
+  echo "- run \`nvm install --lts\`"
+}
+
 installChromeApp
 installTiles
 installVSCode
@@ -50,3 +56,4 @@ installHotkeyApp
 installHomebrew
 installNodeVersionManager
 installFastEnv
+postSetup
