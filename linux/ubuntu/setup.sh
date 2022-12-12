@@ -31,6 +31,14 @@ installNodeVersionManager() {
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 }
 
+installTablePlus() {
+  sudo apt install software-properties-common
+  wget -qO - https://deb.tableplus.com/apt.tableplus.com.gpg.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/tableplus-archive.gpg
+  sudo add-apt-repository "deb [arch=amd64] https://deb.tableplus.com/debian/22 tableplus main"
+  sudo apt update
+  sudo apt install tableplus
+}
+
 postSetup() {
   echo ""
   echo "Resource terminal and then"
@@ -43,4 +51,5 @@ installOhMyZsh
 installFastEnv
 installVSCode
 installNodeVersionManager
+installTablePlus
 postSetup
