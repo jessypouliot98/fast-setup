@@ -13,11 +13,19 @@ import { $ } from "bun";
 const { prompt } = Enquirer;
 
 const PACKAGE = {
-  "Google Chrome": { dependsOn: ["wget"] },
-  "Rectangle": { dependsOn: ["wget"] },
+  "Google Chrome": { dependsOn: ["Homebrew"] },
+  "Firefox": { dependsOn: ["Homebrew"] },
+  "Rectangle": { dependsOn: ["Homebrew"] },
+  "Spotify": { dependsOn: ["Homebrew"] },
   "Hotkey": { dependsOn: [] },
-  "Visual Studio Code": { dependsOn: ["wget"] },
-  "Jetbrains Toolbox": { dependsOn: [] },
+  "Microsoft Teams": { dependsOn: ["Homebrew"] },
+  "Slack": { dependsOn: ["Homebrew"] },
+  "Discord": { dependsOn: ["Homebrew"] },
+  "Steam": { dependsOn: ["Homebrew"] },
+  "Parsec": { dependsOn: ["Homebrew"] },
+  "Playstation Remote Play": { dependsOn: ["Homebrew"] },
+  "Visual Studio Code": { dependsOn: ["Homebrew"] },
+  "Jetbrains Toolbox": { dependsOn: ["Homebrew"] },
   "ASDF Version Manager": { dependsOn: ["Oh My Zsh", "git"] },
   "ASDF Plugin Node": { dependsOn: ["ASDF Version Manager"] },
   "ASDF Plugin Java": { dependsOn: ["ASDF Version Manager"] },
@@ -125,12 +133,40 @@ async function installPackages(sudoPassword: string, packages: PACKAGE[], instal
         await brewInstall("google-chrome");
         break;
       }
+      case "Firefox": {
+        await brewInstall("firefox");
+        break;
+      }
       case "Visual Studio Code": {
         await brewInstall("visual-studio-code");
         break;
       }
       case "Jetbrains Toolbox": {
         await brewInstall("jetbrains-toolbox");
+        break;
+      }
+      case "Microsoft Teams": {
+        await brewInstall("microsoft-teams");
+        break;
+      }
+      case "Slack": {
+        await brewInstall("slack");
+        break;
+      }
+      case "Steam": {
+        await brewInstall("steam");
+        break;
+      }
+      case "Parsec": {
+        await brewInstall("parsec");
+        break;
+      }
+      case "Playstation Remote Play": {
+        await brewInstall("sony-ps-remote-play");
+        break;
+      }
+      case "Discord": {
+        await brewInstall("sony-ps-remote-play");
         break;
       }
       case "Rectangle": {
