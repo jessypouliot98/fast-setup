@@ -23,43 +23,6 @@ export async function ohMyZshAddPlugin(pluginName: string) {
   return zshAddLine(`plugins=(${pluginName})`);
 }
 
-export async function installGoogleChrome(sudoPassword: string) {
-  const check = await $`ls /Applications | grep "Google Chrome.app"`.text()
-  if (check.includes("Google Chrome.app")) {
-    console.log("Google Chrome.app is already installed.")
-    return;
-  }
-
-  const srcFile = "./chrome.dmg";
-  await $`wget https://dl.google.com/chrome/mac/universal/stable/GGRO/googlechrome.dmg -O ${srcFile}`
-  await $`echo ${sudoPassword} | sudo -S hdiutil attach ${srcFile}`
-  await $`echo ${sudoPassword} | sudo -S cp -R "/Volumes/Google Chrome/Google Chrome.app" /Applications`
-  await $`rm ${srcFile}`
-}
-
-export async function installVSCode() {
-  const check = await $`ls /Applications | grep "Visual Studio Code.app"`.text()
-  if (check.includes("Visual Studio Code.app")) {
-    console.log("Visual Studio Code.app is already installed.")
-    return;
-  }
-
-  const srcZip = "./vscode.zip";
-  await $`wget https://az764295.vo.msecnd.net/stable/c722ca6c7eed3d7987c0d5c3df5c45f6b15e77d1/VSCode-darwin-universal.zip -O ${srcZip}`
-  await $`echo "n" | unzip ${srcZip} -d /Applications`
-  await $`rm ${srcZip}`
-}
-
-export async function installJetbrainsToolbox() {
-  const check = await $`ls /Applications | grep "JetBrains Toolbox.app"`.text()
-  if (check.includes("JetBrains Toolbox.app")) {
-    console.log("Jetbrains Toolbox.app is already installed.")
-    return;
-  }
-
-  await $`open -a "Safari" "https://www.jetbrains.com/toolbox-app"`
-}
-
 export async function installRectangle(sudoPassword: string) {
   const check = await $`ls /Applications | grep Rectangle.app`.text()
   if (check.includes("Rectangle")) {

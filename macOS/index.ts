@@ -3,11 +3,11 @@ import {
   asdfAddPluginJava,
   asdfAddPluginNode,
   brewInstall,
-  installASDF, installBun,
-  installGoogleChrome,
-  installHomebrew, installHotkey, installJetbrainsToolbox,
-  installOhMyZsh, installRectangle,
-  installVSCode,
+  installASDF,
+  installBun,
+  installHomebrew,
+  installHotkey,
+  installOhMyZsh
 } from "./src/packages.ts";
 import { $ } from "bun";
 const { prompt } = Enquirer;
@@ -26,6 +26,7 @@ const PACKAGE = {
   "Homebrew": { dependsOn: [] },
   "wget": { dependsOn: ["Homebrew"] },
   "git": { dependsOn: ["Homebrew"] },
+  "git-lfs": { dependsOn: ["git", "Homebrew"] },
 } satisfies Record<string, { dependsOn: string[] }>
 type PACKAGE = keyof typeof PACKAGE;
 
@@ -121,19 +122,19 @@ async function installPackages(sudoPassword: string, packages: PACKAGE[], instal
     console.log(`Installing ${pkg}...`);
     switch (pkg) {
       case "Google Chrome": {
-        await installGoogleChrome(sudoPassword);
+        await brewInstall("google-chrome");
         break;
       }
       case "Visual Studio Code": {
-        await installVSCode();
+        await brewInstall("visual-studio-code");
         break;
       }
       case "Jetbrains Toolbox": {
-        await installJetbrainsToolbox();
+        await brewInstall("jetbrains-toolbox");
         break;
       }
       case "Rectangle": {
-        await installRectangle(sudoPassword);
+        await brewInstall("rectangle");
         break;
       }
       case "Hotkey": {
@@ -150,6 +151,10 @@ async function installPackages(sudoPassword: string, packages: PACKAGE[], instal
       }
       case "git": {
         await brewInstall("git");
+        break;
+      }
+      case "git-lfs": {
+        await brewInstall("git-lfs");
         break;
       }
       case "Oh My Zsh": {
