@@ -129,7 +129,7 @@ async function installPackages(sudoPassword: string, packages: PACKAGE[], instal
         break;
       }
       case "Jetbrains Toolbox": {
-        await installJetbrainsToolbox(sudoPassword);
+        await installJetbrainsToolbox();
         break;
       }
       case "Rectangle": {

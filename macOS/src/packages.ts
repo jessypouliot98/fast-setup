@@ -50,7 +50,7 @@ export async function installVSCode() {
   await $`rm ${srcZip}`
 }
 
-export async function installJetbrainsToolbox(sudoPassword: string) {
+export async function installJetbrainsToolbox() {
   const check = await $`ls /Applications | grep "JetBrains Toolbox.app"`.text()
   if (check.includes("JetBrains Toolbox.app")) {
     console.log("Jetbrains Toolbox.app is already installed.")
