@@ -253,7 +253,7 @@ export default new PackageBuilder()
     "Developer | Podman (Free Docker alternative)",
     { dependsOn: ["Homebrew"] },
     async (args) => {
-      const check = await $`which podman`.text();
+      const check = await $`which docker`.text();
       if (!check.includes("not found")) {
         return "already-installed";
       }
