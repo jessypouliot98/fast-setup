@@ -2,6 +2,10 @@
   "name": "fast-setup",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run .",
+    "build": "bun build index.ts --compile --outfile dist/setup"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
