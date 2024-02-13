@@ -7,6 +7,7 @@ import { $ } from "bun";
 
 async function getOS() {
   const osType = await $`echo $OSTYPE`.text();
+  console.log({osType})
   if (osType.includes("darwin")) {
     return "macOS";
   }
