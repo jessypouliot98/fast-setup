@@ -93,8 +93,8 @@ export class PackageBuilder<TOptions extends Array<string> = []> {
       await postInstallCb();
     }
 
-    console.log(`[Installed]:\n\t${installed.join(",\n\t ")}`);
-    console.log(`[Failed]:\n\t${errored.join(",\n\t ")}`);
+    console.log(`[Installed]:\n\t${installed.join(",\n\t")}`);
+    console.log(`[Failed]:\n\t${errored.join(",\n\t")}`);
   }
 
   public async promptAndInstallPackages(args: PackageInstallArgs) {

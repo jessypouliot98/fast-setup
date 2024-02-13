@@ -114,6 +114,11 @@ export default new PackageBuilder()
     async (args) => brewInstall("microsoft-teams", args),
   )
   .addOption(
+    "Utility | OBS",
+    { dependsOn: [] },
+    async (args) => brewInstall("obs", args),
+  )
+  .addOption(
     "Utility | Hotkey",
     { dependsOn: [] },
     async (args) => {
@@ -125,6 +130,11 @@ export default new PackageBuilder()
       await $`open https://apps.apple.com/us/app/hotkey-app/id975890633`;
       return "installed";
     },
+  )
+  .addOption(
+    "Utility | VLC Player",
+    { dependsOn: [] },
+    async (args) => brewInstall("vlc", args),
   )
   .addOption(
     "Utility | Rectangle",
@@ -258,7 +268,7 @@ export default new PackageBuilder()
     "Developer | Podman (Free Docker alternative)",
     { dependsOn: ["Homebrew"] },
     async (args) => {
-      const check = await $`which podman`.text();
+      const check = await $`which docker`.text();
       if (!check.includes("not found")) {
         return "already-installed";
       }
