@@ -132,6 +132,11 @@ export default new PackageBuilder()
     async (args) => brewInstall("rectangle", args),
   )
   .addOption(
+    "Utility | OBS",
+    { dependsOn: [] },
+    async (args) => brewInstall("obs", args),
+  )
+  .addOption(
     "Developer | ASDF Version Manager",
     { dependsOn: ["coreutils", "Oh My Zsh", "git"] },
     async (args) => {
@@ -168,6 +173,16 @@ export default new PackageBuilder()
     "Developer | Git LFS",
     { dependsOn: ["Homebrew"] },
     async (args) => brewInstall("git-lfs", args),
+  )
+  .addOption(
+    "Design | Figma",
+    { dependsOn: ["Homebrew"] },
+    async (args) => brewInstall("figma", args),
+  )
+  .addOption(
+    "Design | Adobe Creative Cloud",
+    { dependsOn: ["Homebrew"] },
+    async (args) => brewInstall("adobe-creative-cloud", args),
   )
   .addOption(
     "Entertainment | Steam",
