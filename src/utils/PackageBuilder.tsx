@@ -53,6 +53,9 @@ export class PackageBuilder<TOptions extends Array<string> = []> {
   }
 
   public async installPackages(packages: Array<TOptions[number]>, args: PackageInstallArgs) {
+    let installed: string[] = [];
+    let errored: string[] = [];
+
     for (const pkg of packages) {
       console.log(`Installing ${pkg}...`)
 
@@ -67,6 +70,7 @@ export class PackageBuilder<TOptions extends Array<string> = []> {
       switch (result) {
         case "installed": {
           console.log(`[Done] ${pkg} installed!`);
+          installed.push(pkg);
           break;
         }
         case "already-installed": {
@@ -74,6 +78,8 @@ export class PackageBuilder<TOptions extends Array<string> = []> {
           break;
         }
         case "error": {
+          errored.push(pkg);
+          errored.push(pkg);
           console.log(`[Error] Could not install ${pkg}, exited with error`);
           break;
         }
@@ -86,6 +92,9 @@ export class PackageBuilder<TOptions extends Array<string> = []> {
       console.log(`[Post Install] ${++i}/${postInstallSize}`);
       await postInstallCb();
     }
+
+    console.log(`[Installed]:\n\t${installed.join(",\n\t ")}`);
+    console.log(`[Failed]:\n\t${errored.join(",\n\t ")}`);
   }
 
   public async promptAndInstallPackages(args: PackageInstallArgs) {

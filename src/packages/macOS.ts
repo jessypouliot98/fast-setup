@@ -36,24 +36,17 @@ export default new PackageBuilder()
   .addCoreOption(
     "Temporary | Ask password overrider",
     { dependsOn: [] },
-    async ({ sudoPassword }) => {
+    async () => {
       await $`mkdir -p ${{ raw: FAST_SETUP_TMP_DIR }}`;
-      await $`echo "#!/bin/bash\necho \\"\\$${{ raw: FAST_SETUP_ASK_PASS_ENV }}\\";" > ${{ raw: FAST_SETUP_ASK_PASS_SCRIPT_PATH }}`;
+      await $`echo "#!/bin/bash\necho \\$${{ raw: FAST_SETUP_ASK_PASS_ENV }};" > ${{ raw: FAST_SETUP_ASK_PASS_SCRIPT_PATH }}`;
       await $`chmod a+x ${{ raw: FAST_SETUP_ASK_PASS_SCRIPT_PATH }}`;
-      console.log({
-        FAST_SETUP_ASK_PASS_ENV,
-        envPassword: await $`echo $FAST_SETUP_ASK_PASS_ANSWER`.env({
-          [FAST_SETUP_ASK_PASS_ENV]: sudoPassword
-        }).text(),
-        sudoPassword,
-      })
 
       return "installed";
     }
   )
-  // .addPostInstallCallback(async () => {
-  //   await $`rm -rf ${{ raw: FAST_SETUP_TMP_DIR }}`
-  // })
+  .addPostInstallCallback(async () => {
+    await $`rm -rf ${{ raw: FAST_SETUP_TMP_DIR }}`
+  })
   .addCoreOption(
     "Oh My Zsh",
     { dependsOn: [] },
@@ -165,6 +158,11 @@ export default new PackageBuilder()
     "Developer | Visual Studio Code",
     { dependsOn: ["Homebrew"] },
     async (args) => brewInstall("visual-studio-code", args),
+  )
+  .addOption(
+    "Developer | Table Plus",
+    { dependsOn: ["Homebrew"] },
+    async (args) => brewInstall("table-plus", args),
   )
   .addOption(
     "Developer | Git LFS",
